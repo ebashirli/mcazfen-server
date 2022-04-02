@@ -2,8 +2,7 @@ import pandas as pd
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 now = datetime.now()
-path = "C:\\Users\\Elvin.Bashirli\\Desktop\\MC\\\sources\\"
-asbuilt_df = pd.read_excel(f'{path}asbuilt.xlsx')
+asbuilt_df = pd.read_excel(f'asbuilt.xlsx')
 
 def migr():
   table_lists = {
@@ -34,7 +33,7 @@ def migr():
   }
   table_names = list(table_lists.keys())
   for table_name in table_names:
-    df = pd.read_excel(f'{path}{table_name}.xlsx')
+    df = pd.read_excel(f'{table_name}.xlsx')
     ld = []
     for i in range(df.shape[0]):
       d = table_lists[table_name]['function'](df, i)
