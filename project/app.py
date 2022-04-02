@@ -162,7 +162,9 @@ def migrate():
                 conn = sq.connect(database)
                 cur = conn.cursor()
                 cur.execute('''DROP TABLE IF EXISTS package''')
+                print(df.shape)
                 df.to_sql('package', conn, if_exists='replace', index=False)
+
                 conn.commit()
                 conn.close()
                 response = 'Done'
