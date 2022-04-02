@@ -1,5 +1,5 @@
 from operator import and_, attrgetter
-from flask import Blueprint, render_template, jsonify, request, session
+from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
 from project.from_excel import migr
 import sqlite3 as sq
@@ -8,7 +8,7 @@ import pandas as pd
 from project.models import Asbuilt, Lossh, Package, Subsystem, Transmittal
 from . import db
 
-main = Blueprint('app', __name__)
+app = Blueprint('app', __name__)
 
 
 models = {
@@ -19,20 +19,20 @@ models = {
     'package': Package
 }
 
-@main.route('/')
+@app.route('/')
 def index():
     return render_template('index.html')
 
-@main.route('/profile')
+@app.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html', name=current_user.name)
 
-@main.route('/home')
+@app.route('/home')
 def home():
     return f'Mecanical Complition Activities Home Page'
 
-@main.route('/<division>/<keyword>', methods=['GET', 'OPTIONS'])
+@app.route('/<division>/<keyword>', methods=['GET', 'OPTIONS'])
 def get_from_source(division, keyword):
     is_drawing = request.args.get("isDrawing") == '1'
     process_name = "lossh" if request.args.get("processName") == '0' else 'asbuilt'
@@ -55,7 +55,7 @@ def get_from_source(division, keyword):
         ls = [list(v)[0] for _, v in groupby(ls, key_f)]
     return response_function(ls)
 
-@main.route('/<process>/<division>/<division_id>', methods=['GET'])
+@app.route('/<process>/<division>/<division_id>', methods=['GET'])
 def get_from_output(process, division, division_id):
     args = request.args
     is_transmittal = args.get("isTransmittal")=='true'
@@ -87,7 +87,7 @@ def get_from_output(process, division, division_id):
         processes = sorted(processes, key=lambda i: i['CreatingDateTime'], reverse=True)
     return response_function(processes)
 
-@main.route('/update/<process_name>', methods=['POST'])
+@app.route('/update/<process_name>', methods=['POST'])
 def update_table_row(process_name):
     request_form = request.form.to_dict()
     isSubsystem = request.args.get("isSubsystem")=='true'
@@ -116,7 +116,7 @@ def update_table_row(process_name):
     db.session.commit()
     return response_function({'message': 'your request has been done'})
 
-@main.route('/<process_name>', methods=['POST'])
+@app.route('/<process_name>', methods=['POST'])
 def insert_process(process_name):
     request_form = request.form.to_dict()
     process = models[process_name].from_dict(request_form)
@@ -133,17 +133,17 @@ def insert_process(process_name):
     db.session.commit()
     return response_function(process_id)
 
-@main.route('/transmittal/last-number', methods=['GET'])
+@app.route('/transmittal/last-number', methods=['GET'])
 def get_last_transmittal_number():
     last_number = models['transmittal'].query.order_by(models['transmittal'].id.desc()).first().Number
     return response_function(str(last_number))
 
-@main.route('/transmittal', methods=['GET'])
+@app.route('/transmittal', methods=['GET'])
 def get_transmittal_by_query():
     number = request.args.get('number')
     return response_function(models['transmittal'].query.filter_by(Number=int(number))[0].to_dict())
 
-@main.route('/migrate', methods=['GET', 'POST'])
+@app.route('/migrate', methods=['GET', 'POST'])
 def migrate():
     if request.method == 'GET':
         return render_template('migrate.html')
