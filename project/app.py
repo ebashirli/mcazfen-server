@@ -159,12 +159,8 @@ def migrate():
                 df = df.rename(columns={'Project': 'project', 'Package': 'package'})
                 df = df[['id', 'project', 'subsystemId', 'package']]
 
-                conn = sq.connect(database)
-                cur = conn.cursor()
-                cur.execute('''DROP TABLE IF EXISTS package''')
-                df.to_sql('package', conn, if_exists='replace', index=False)
-                conn.commit()
-                conn.close()
+                Package.__table__.drop(db.engine)
+                df.to_sql('package', db.engine, if_exists='replace', index=False)
                 response = 'Done'
             except Exception as ex:
                 response = f'Error: Uploaded file has no {ex.args[0]} column!'
