@@ -8,7 +8,7 @@ import pandas as pd
 from project.models import Asbuilt, Lossh, Package, Subsystem, Transmittal
 from . import db
 
-main = Blueprint('main', __name__)
+main = Blueprint('app', __name__)
 
 
 models = {
