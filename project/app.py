@@ -105,6 +105,7 @@ def update_table_row(process_name):
                     value = 1 if value == 'true' else 0
                 setattr(process_row, key, value)
     else:
+        print(request_form)
         subsystemID = request_form['id']
         drawing = request_form['Drawing']
         mCRevision = request_form['MCRevision']
