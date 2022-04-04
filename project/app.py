@@ -35,9 +35,11 @@ def get_from_source(division, keyword):
     is_drawing = request.args.get("isDrawing") == '1'
     process_name = "lossh" if request.args.get("processName") == '0' else 'asbuilt'
 
-    model = models[division]
+    
     if division == 'subsystem':
         model = models['package']
+    else:
+        model = models[division]
     all_divs = model.query.filter(model.id.like(f'%{keyword}%')).all()
     if is_drawing:
         all_processes = models[process_name].query.filter(models[process_name].Drawing==keyword).all()
