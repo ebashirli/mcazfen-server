@@ -151,7 +151,6 @@ def migrate():
         isPackage = request.args.get('package')
         if isPackage:
             try:
-                database = r'project\db.sqlite'
                 df = pd.read_excel(request.files.get('file'))
                 df.dropna(subset = ["Package"], inplace=True)
                 df['id'] = df['Project'] + '|' + df['Package']
@@ -169,7 +168,6 @@ def migrate():
         tables = migr()
         for table_name in list(tables.keys()):
             db.session.bulk_insert_mappings(models[table_name], tables[table_name]['list'])
-        # db.session.bulk_insert_mappings(ms[5], lds[0])
         db.session.commit()
         return "Migration Done"
 
