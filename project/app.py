@@ -1,8 +1,7 @@
 from operator import and_, attrgetter
 from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
-from project.from_excel import migr
-import sqlite3 as sq
+# from project.from_excel import migr
 import pandas as pd
 
 from project.models import Asbuilt, Lossh, Package, Transmittal
@@ -164,10 +163,10 @@ def migrate():
                 response = f'Error: Uploaded file has no {ex.args[0]} column!'
             return response_function(response)
                 
-        tables = migr()
-        for table_name in list(tables.keys()):
-            db.session.bulk_insert_mappings(models[table_name], tables[table_name]['list'])
-        db.session.commit()
+        # tables = migr()
+        # for table_name in list(tables.keys()):
+        #     db.session.bulk_insert_mappings(models[table_name], tables[table_name]['list'])
+        # db.session.commit()
         return "Migration Done"
 
 def response_function(res):
