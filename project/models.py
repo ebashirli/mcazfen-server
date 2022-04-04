@@ -216,21 +216,3 @@ class Package(db.Model):
             subsystemId = dic['SubsystemID'],
             package = dic['Package']
         )
-
-class Subsystem(db.Model):
-    id = db.Column(db.String(100), primary_key=True, unique=True)
-    project = db.Column(db.String(100), nullable=False)
-    subsystem = db.Column(db.String(100), nullable=False)
-
-    def to_dict(self):
-        return {
-            'SubsystemID': self.id,
-            'Project': self.project,
-            'Subsystem': self.subsystem
-        }
-    def from_dict(dic):
-        return Subsystem(
-            id = dic['SubsystemID'],
-            project = dic['Project'],
-            subsystem =  dic['Subsystem']
-        )

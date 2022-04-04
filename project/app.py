@@ -5,7 +5,7 @@ from project.from_excel import migr
 import sqlite3 as sq
 import pandas as pd
 
-from project.models import Asbuilt, Lossh, Package, Subsystem, Transmittal
+from project.models import Asbuilt, Lossh, Package, Transmittal
 from . import db
 
 app = Blueprint('app', __name__)
@@ -15,7 +15,6 @@ models = {
     'lossh': Lossh,
     'asbuilt': Asbuilt,
     'transmittal': Transmittal,
-    'subsystem': Subsystem,
     'package': Package
 }
 

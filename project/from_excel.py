@@ -1,8 +1,7 @@
 import pandas as pd
 from datetime import datetime
 now = datetime.now()
-
-
+asbuilt_df = pd.read_excel(f'asbuilt.xlsx')
 
 def migr():
   table_lists = {
@@ -56,7 +55,6 @@ def asbuilt_dict(dataframe, item):
     ReceivedFrom = None if pd.isna(dataframe.iloc[item]['ReceivedFrom']) else dataframe.iloc[item]['ReceivedFrom']
   )
 def transmittal_dict(dataframe, item):
-  asbuilt_df = pd.read_excel(f'asbuilt.xlsx')
   l = asbuilt_df.loc[asbuilt_df['TransmittalNumbers'].str.contains(f";{dataframe.iloc[item]['Number']};", na=False), "ID"].to_list()
   asbuiltIds = ';' if len(l)==0 else f";{';'.join(str(v) for v in l)};"
   return dict(
